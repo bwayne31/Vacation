@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wayne & Konz Family Cruise — March 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean: #0a3d62;
+    --wave: #1e6fa5;
+    --sky: #d6eaf8;
+    --sand: #fef9f0;
+    --coral: #e8634a;
+    --gold: #f0a500;
+    --text: #1a1a2e;
+    --muted: #5a6a7a;
+    --white: #ffffff;
+    --card-border: rgba(10,61,98,0.12);
+    --green-bg: #e8f8f0;
+    --green-border: rgba(26,122,80,0.25);
+    --green-text: #1a7a50;
+    --green-dark: #155f3e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--sand); color: var(--text); line-height: 1.6; }
+
+  /* HERO */
+  .hero {
+    background: var(--ocean);
+    color: var(--white);
+    padding: 44px 24px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 48px;
+    background: var(--sand);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .hero-eyebrow { font-size: 12px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 5vw, 48px); font-weight: 700; line-height: 1.15; margin-bottom: 6px; }
+  .hero-sub { font-size: 14px; color: rgba(255,255,255,0.65); margin-bottom: 20px; }
+
+  .hero-dates {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .hero-date-pill {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--white);
+  }
+
+  /* COUNTDOWNS IN HERO */
+  .countdown-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  @media (max-width: 480px) { .countdown-grid { grid-template-columns: 1fr; } }
+  .countdown-card {
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 14px 10px;
+  }
+  .countdown-label { font-size: 10px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .countdown-title { font-size: 12px; color: rgba(255,255,255,0.65); margin-bottom: 10px; }
+  .countdown-units { display: flex; justify-content: center; gap: 6px; }
+  .countdown-unit { background: rgba(255,255,255,0.12); border-radius: 8px; padding: 8px 6px 6px; min-width: 48px; }
+  .countdown-num { font-family: 'Playfair Display', serif; font-size: 24px; line-height: 1; color: var(--white); }
+  .countdown-sublabel { font-size: 9px; color: rgba(255,255,255,0.5); margin-top: 3px; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* NAV BAR */
+  .quick-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--card-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .quick-nav a {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .quick-nav a:hover { color: var(--ocean); border-bottom-color: var(--ocean); }
+
+  /* LAYOUT */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+  section { padding: 36px 0; }
+  .section-label { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--wave); margin-bottom: 6px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--ocean); margin-bottom: 20px; }
+  .divider { border: none; border-top: 1px solid var(--card-border); margin: 0; }
+
+  /* BOOKED CARDS */
+  .booked-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: 14px;
+    margin-bottom: 10px;
+    border: 1px solid var(--green-border);
+    background: var(--green-bg);
+  }
+  .booked-card.pending {
+    background: var(--white);
+    border-color: var(--card-border);
+  }
+  .booked-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .booked-status { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 3px; color: var(--green-dark); }
+  .booked-card.pending .booked-status { color: var(--muted); }
+  .booked-name { font-weight: 500; font-size: 15px; color: var(--ocean); margin-bottom: 2px; }
+  .booked-detail { font-size: 13px; color: var(--muted); }
+  .booked-link {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 12px;
+    color: var(--wave);
+    text-decoration: none;
+    border: 1px solid var(--card-border);
+    background: var(--white);
+    padding: 5px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  /* FLIGHTS */
+  .flight-group-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 14px 0 6px;
+  }
+  .flight-group-label:first-child { margin-top: 0; }
+  .flight-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 11px 16px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .flight-airports {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ocean);
+    flex: 1;
+  }
+  .flight-airports span {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-left: 6px;
+  }
+  .flight-btn {
+    font-size: 12px;
+    color: var(--wave);
+    text-decoration: none;
+    border: 1px solid var(--card-border);
+    background: var(--sand);
+    padding: 5px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+
+  /* PRICE TRACKER */
+  .tracker-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .tracker-tab {
+    padding: 7px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--card-border);
+    background: var(--white);
+    color: var(--muted);
+    transition: all 0.15s;
+  }
+  .tracker-tab.active { background: var(--ocean); color: var(--white); border-color: var(--ocean); }
+  .tracker-panel { display: none; }
+  .tracker-panel.active { display: block; }
+
+  .tracker-item {
+    background: var(--white);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 12px;
+  }
+  .tracker-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .tracker-item-name { font-weight: 500; font-size: 15px; color: var(--ocean); }
+  .tracker-item-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .tracker-current-price { text-align: right; }
+  .tracker-price-num { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--ocean); line-height: 1; }
+  .tracker-price-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .tracker-trend {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 100px;
+    margin-top: 4px;
+  }
+  .trend-same { background: var(--sky); color: var(--ocean); }
+  .trend-down { background: #e8f8f0; color: #1a7a50; }
+  .trend-up { background: #fde8e4; color: #a0240e; }
+
+  .price-history { border-top: 1px solid var(--card-border); padding-top: 12px; }
+  .price-history-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 8px; }
+  .history-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(10,61,98,0.05);
+    color: var(--muted);
+  }
+  .history-row:last-child { border-bottom: none; }
+  .history-row .h-price { font-weight: 500; color: var(--text); }
+  .history-row.latest .h-price { color: var(--ocean); font-weight: 600; }
+
+  .port-header { display: flex; align-items: center; gap: 10px; margin: 20px 0 10px; }
+  .port-name { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--ocean); }
+  .port-empty {
+    background: var(--white);
+    border: 1px dashed var(--card-border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    font-size: 14px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  /* TIMELINE */
+  .timeline-row {
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--card-border);
+    align-items: baseline;
+  }
+  .timeline-row:last-child { border-bottom: none; }
+  .tl-date { font-size: 12px; color: var(--coral); font-weight: 500; }
+  .tl-text { font-size: 14px; color: var(--text); }
+  .tl-detail { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ocean);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 28px 20px;
+    font-size: 13px;
+    margin-top: 40px;
+  }
+  footer strong { color: rgba(255,255,255,0.85); }
+</style>
+</head>
+<body>
+
+<!-- PASSWORD OVERLAY -->
+<div id="password-overlay" style="
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #0a3d62;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: 'DM Sans', sans-serif;
+">
+  <div style="text-align:center; max-width: 340px; padding: 0 24px;">
+    <div style="font-size: 48px; margin-bottom: 16px;">🚢</div>
+    <div style="font-family: 'Playfair Display', serif; font-size: 26px; color: #ffffff; margin-bottom: 8px;">Wayne &amp; Konz Cruise</div>
+    <div style="font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 32px;">Enter the password to view trip details</div>
+    <input id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPassword()" style="
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: #ffffff;
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+    ">
+    <div id="pw-error" style="font-size:13px; color:#e8634a; min-height:18px; margin-bottom:10px;"></div>
+    <button onclick="checkPassword()" style="
+      width: 100%;
+      padding: 12px;
+      background: #f0a500;
+      color: #0a3d62;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+    ">Let's Go ✈</button>
+  </div>
+</div>
+
+<script>
+  function checkPassword() {
+    const input = document.getElementById('pw-input').value;
+    if (input === 'Going on a vacation') {
+      document.getElementById('password-overlay').style.display = 'none';
+    } else {
+      document.getElementById('pw-error').textContent = 'Incorrect password — try again!';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  }
+</script>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">Wayne &amp; Konz Families</p>
+  <h1>Caribbean Cruise<br>March 2027</h1>
+  <p class="hero-sub">Carnival Venezia · Port Canaveral, FL · 7 nights at sea</p>
+  <div class="hero-dates">
+    <span class="hero-date-pill">✈ Fly out March 6</span>
+    <span class="hero-date-pill">🚢 Cruise March 7–14</span>
+  </div>
+  <div class="countdown-grid">
+    <div class="countdown-card">
+      <div class="countdown-label">Wheels up</div>
+      <div class="countdown-title">March 6 · 6:00 AM</div>
+      <div class="countdown-units">
+        <div class="countdown-unit"><div class="countdown-num" id="vac-days">--</div><div class="countdown-sublabel">Days</div></div>
+        <div class="countdown-unit"><div class="countdown-num" id="vac-hours">--</div><div class="countdown-sublabel">Hrs</div></div>
+        <div class="countdown-unit"><div class="countdown-num" id="vac-mins">--</div><div class="countdown-sublabel">Min</div></div>
+        <div class="countdown-unit"><div class="countdown-num" id="vac-secs">--</div><div class="countdown-sublabel">Sec</div></div>
+      </div>
+    </div>
+    <div class="countdown-card">
+      <div class="countdown-label">Set sail</div>
+      <div class="countdown-title">March 7 · 4:00 PM</div>
+      <div class="countdown-units">
+        <div class="countdown-unit"><div class="countdown-num" id="cruise-days">--</div><div class="countdown-sublabel">Days</div></div>
+        <div class="countdown-unit"><div class="countdown-num" id="cruise-hours">--</div><div class="countdown-sublabel">Hrs</div></div>
+        <div class="countdown-unit"><div class="countdown-num" id="cruise-mins">--</div><div class="countdown-sublabel">Min</div></div>
+        <div class="countdown-unit"><div class="countdown-num" id="cruise-secs">--</div><div class="countdown-sublabel">Sec</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK NAV -->
+<nav class="quick-nav">
+  <a href="#booked">Booked</a>
+  <a href="#flights">Flights</a>
+  <a href="#transport">Transport</a>
+  <a href="#prices">Prices</a>
+  <a href="#timeline">Timeline</a>
+</nav>
+
+<div class="container">
+
+  <!-- BOOKED -->
+  <section id="booked">
+    <p class="section-label">Status</p>
+    <h2 class="section-title">What's booked</h2>
+
+    <div class="booked-card">
+      <div class="booked-icon">✅</div>
+      <div>
+        <div class="booked-status">Confirmed</div>
+        <div class="booked-name">Holiday Inn Express Cape Canaveral by IHG</div>
+        <div class="booked-detail">995 Shorewood Drive, Cape Canaveral, FL · Mar 6 check-in · Mar 7 check-out · Walking distance to port</div>
+      </div>
+      <a class="booked-link" href="https://www.google.com/maps/search/Holiday+Inn+Express+Cape+Canaveral+995+Shorewood+Drive+Cape+Canaveral+FL" target="_blank" rel="noopener">📍 Map</a>
+    </div>
+
+    <div class="booked-card pending">
+      <div class="booked-icon">🕐</div>
+      <div>
+        <div class="booked-status">Not yet booked</div>
+        <div class="booked-name">Flights</div>
+        <div class="booked-detail">Comparing options — see flight pricing below</div>
+      </div>
+      <a class="booked-link" href="#flights">View options</a>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- FLIGHTS -->
+  <section id="flights">
+    <p class="section-label">Getting there</p>
+    <h2 class="section-title">Flight pricing</h2>
+
+    <div class="flight-group-label">MSP ↔ MCO &nbsp;·&nbsp; Nonstop outbound</div>
+    <div class="flight-row">
+      <div class="flight-airports">MSP ↔ MCO <span>Rochester crew + Fargo boys</span></div>
+      <a class="flight-btn" href="https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI3LTAzLTA2agcIARIDTVNQcgcIARIDTUNPGh4SCjIwMjctMDMtMTRqBwgBEgNNQ09yBwgBEgNNU1AqAggBQAFIAXABggELCP___________wGYAQE" target="_blank" rel="noopener">Round Trip ↗</a>
+      <a class="flight-btn" href="https://www.google.com/travel/flights?q=Flights+from+MSP+to+MCO+on+2027-03-06+oneway" target="_blank" rel="noopener">→ MCO ↗</a>
+      <a class="flight-btn" href="https://www.google.com/travel/flights?q=Flights+from+MCO+to+MSP+on+2027-03-14+oneway" target="_blank" rel="noopener">← MSP ↗</a>
+    </div>
+
+    <div class="flight-group-label">RST ↔ MCO &nbsp;·&nbsp; 1 stop · Rochester crew</div>
+    <div class="flight-row">
+      <div class="flight-airports">RST ↔ MCO <span>Rochester crew</span></div>
+      <a class="flight-btn" href="https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI3LTAzLTA2agcIARIDUlNUcgcIARIDTUNPGh4SCjIwMjctMDMtMTRqBwgBEgNNQ09yBwgBEgNSU1QqAggCQAFIAXABggELCP___________wGYAQE" target="_blank" rel="noopener">Round Trip ↗</a>
+      <a class="flight-btn" href="https://www.google.com/travel/flights?q=Flights+from+RST+to+MCO+on+2027-03-06+oneway" target="_blank" rel="noopener">→ MCO ↗</a>
+      <a class="flight-btn" href="https://www.google.com/travel/flights?q=Flights+from+MCO+to+RST+on+2027-03-14+oneway" target="_blank" rel="noopener">← RST ↗</a>
+    </div>
+
+    <div class="flight-group-label">FAR ↔ MCO &nbsp;·&nbsp; 1 stop · Fargo boys</div>
+    <div class="flight-row">
+      <div class="flight-airports">FAR ↔ MCO <span>Nolan, Gavin, Mason</span></div>
+      <a class="flight-btn" href="https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI3LTAzLTA2agcIARIDRkFScgcIARIDTUNPGh4SCjIwMjctMDMtMTRqBwgBEgNNQ09yBwgBEgNGQVIqAggCQAFIAXABggELCP___________wGYAQE" target="_blank" rel="noopener">Round Trip ↗</a>
+      <a class="flight-btn" href="https://www.google.com/travel/flights?q=Flights+from+FAR+to+MCO+on+2027-03-06+oneway" target="_blank" rel="noopener">→ MCO ↗</a>
+      <a class="flight-btn" href="https://www.google.com/travel/flights?q=Flights+from+MCO+to+FAR+on+2027-03-14+oneway" target="_blank" rel="noopener">← FAR ↗</a>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TRANSPORTATION -->
+  <section id="transport">
+    <p class="section-label">Getting Around</p>
+    <h2 class="section-title">MCO ↔ Hotel ↔ Port</h2>
+    <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">All prices are for the full group of 9. Uber &amp; taxi estimates based on similar dates — actual fares may vary.</p>
+
+    <!-- TABLE HEADER -->
+    <div style="display:grid; grid-template-columns: 1fr 80px 80px 80px; gap:8px; padding: 6px 14px; font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted);">
+      <div>Option</div>
+      <div style="text-align:center;">To Hotel</div>
+      <div style="text-align:center;">To Airport</div>
+      <div style="text-align:right;">Round Trip</div>
+    </div>
+
+    <!-- SHARED SHUTTLE -->
+    <div style="background:var(--white); border:1px solid var(--card-border); border-radius:12px; padding:12px 14px; margin-bottom:8px;">
+      <div style="display:grid; grid-template-columns:1fr 80px 80px 80px; gap:8px; align-items:center;">
+        <div>
+          <div style="font-size:14px; font-weight:500; color:var(--ocean);">🚌 Shared Shuttle</div>
+          <div style="font-size:12px; color:var(--muted);">$25/person · scheduled stops</div>
+        </div>
+        <div style="text-align:center; font-size:14px; font-weight:500; color:var(--text);">$225</div>
+        <div style="text-align:center; font-size:14px; font-weight:500; color:var(--text);">$225</div>
+        <div style="text-align:right; font-size:14px; font-weight:500; color:var(--ocean);">$450</div>
+      </div>
+      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+        <a class="flight-btn" href="https://airportcanaveral.com" target="_blank" rel="noopener">airportcanaveral.com ↗</a>
+        <a class="flight-btn" href="https://www.cruisecontrol-transportation.com" target="_blank" rel="noopener">cruisecontrol-transportation.com ↗</a>
+      </div>
+    </div>
+
+    <!-- DEDICATED SHUTTLE RT -->
+    <div style="background:var(--white); border:1px solid var(--card-border); border-radius:12px; padding:12px 14px; margin-bottom:8px;">
+      <div style="display:grid; grid-template-columns:1fr 80px 80px 80px; gap:8px; align-items:center;">
+        <div>
+          <div style="font-size:14px; font-weight:500; color:var(--ocean);">🔄 Dedicated RT Shuttle</div>
+          <div style="font-size:12px; color:var(--muted);">$48/person round trip · direct service</div>
+        </div>
+        <div style="text-align:center; font-size:13px; color:var(--muted);">—</div>
+        <div style="text-align:center; font-size:13px; color:var(--muted);">—</div>
+        <div style="text-align:right; font-size:14px; font-weight:500; color:var(--ocean);">$432</div>
+      </div>
+      <div style="margin-top:10px;">
+        <a class="flight-btn" href="https://mcotoportcanaveral.com" target="_blank" rel="noopener">mcotoportcanaveral.com ↗</a>
+      </div>
+    </div>
+
+    <!-- PRIVATE SHUTTLE -->
+    <div style="background:var(--white); border:1px solid var(--card-border); border-radius:12px; padding:12px 14px; margin-bottom:8px;">
+      <div style="display:grid; grid-template-columns:1fr 80px 80px 80px; gap:8px; align-items:center;">
+        <div>
+          <div style="font-size:14px; font-weight:500; color:var(--ocean);">🚐 Private Shuttle</div>
+          <div style="font-size:12px; color:var(--muted);">$400/trip · entire vehicle · direct</div>
+        </div>
+        <div style="text-align:center; font-size:14px; font-weight:500; color:var(--text);">$400</div>
+        <div style="text-align:center; font-size:14px; font-weight:500; color:var(--text);">$400</div>
+        <div style="text-align:right; font-size:14px; font-weight:500; color:var(--ocean);">$800</div>
+      </div>
+      <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+        <a class="flight-btn" href="https://airportcanaveral.com" target="_blank" rel="noopener">airportcanaveral.com ↗</a>
+        <a class="flight-btn" href="https://www.cruisecontrol-transportation.com" target="_blank" rel="noopener">cruisecontrol-transportation.com ↗</a>
+      </div>
+    </div>
+
+    <!-- UBER -->
+    <div style="background:var(--white); border:1px solid var(--card-border); border-radius:12px; padding:12px 14px; margin-bottom:8px;">
+      <div style="display:grid; grid-template-columns:1fr 80px 80px 80px; gap:8px; align-items:center;">
+        <div>
+          <div style="font-size:14px; font-weight:500; color:var(--ocean);">🚗 Uber <span style="font-size:11px; color:var(--coral); font-weight:400;">est.</span></div>
+          <div style="font-size:12px; color:var(--muted);">2 vehicles needed · before tip</div>
+        </div>
+        <div style="text-align:center; font-size:14px; font-weight:500; color:var(--text);">~$200</div>
+        <div style="text-align:center; font-size:14px; font-weight:500; color:var(--text);">~$270</div>
+        <div style="text-align:right; font-size:14px; font-weight:500; color:var(--ocean);">~$470</div>
+      </div>
+    </div>
+
+    <!-- TAXI -->
+    <div style="background:var(--white); border:1px solid var(--card-border); border-radius:12px; padding:12px 14px; margin-bottom:8px;">
+      <div style="display:grid; grid-template-columns:1fr 80px 80px 80px; gap:8px; align-items:center;">
+        <div>
+          <div style="font-size:14px; font-weight:500; color:var(--ocean);">🚕 Taxi <span style="font-size:11px; color:var(--coral); font-weight:400;">est.</span></div>
+          <div style="font-size:12px; color:var(--muted);">2 vehicles needed · $150 each way</div>
+        </div>
+        <div style="text-align:center; font-size:14px; font-weight:500; color:var(--text);">~$300</div>
+        <div style="text-align:center; font-size:14px; font-weight:500; color:var(--text);">~$300</div>
+        <div style="text-align:right; font-size:14px; font-weight:500; color:var(--ocean);">~$600</div>
+      </div>
+    </div>
+
+    <div style="background:var(--sky); border-radius:10px; padding:10px 14px; font-size:13px; color:var(--ocean); margin-top:4px;">
+      💡 <strong>Best value:</strong> Dedicated RT shuttle at $432 all-in beats everything else. Shared shuttle at $450 RT is close. Uber &amp; taxi estimates may change on actual dates.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- PRICE TRACKER -->
+  <section id="prices">
+    <p class="section-label">Onboard &amp; Shore</p>
+    <h2 class="section-title">Price tracker</h2>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:20px;">Prices checked periodically on Carnival's website. All drink package prices are per person, per day.</p>
+
+    <div class="tracker-tabs">
+      <button class="tracker-tab active" onclick="showTab('drinks', this)">🍹 Drink Packages</button>
+      <button class="tracker-tab" onclick="showTab('excursions', this)">⚓ Excursions</button>
+    </div>
+
+    <!-- DRINKS -->
+    <div class="tracker-panel active" id="panel-drinks">
+
+      <div class="tracker-item">
+        <div class="tracker-item-header">
+          <div>
+            <div class="tracker-item-name">Cheers! Beverage Program</div>
+            <div class="tracker-item-sub">Unlimited alcoholic &amp; non-alcoholic drinks · Per person, per day</div>
+          </div>
+          <div class="tracker-current-price">
+            <div class="tracker-price-num">$69.95</div>
+            <div class="tracker-price-label">Per person / day · $588 total</div>
+            <div class="tracker-trend trend-same">First check</div>
+          </div>
+        </div>
+        <div class="price-history">
+          <div class="price-history-label">Price history</div>
+          <div class="history-row latest">
+            <span>May 27, 2025</span>
+            <span class="h-price">$69.95 / day &nbsp;·&nbsp; $588 total</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tracker-item">
+        <div class="tracker-item-header">
+          <div>
+            <div class="tracker-item-name">Zero Proof Beverage Program</div>
+            <div class="tracker-item-sub">Non-alcoholic drinks only · Per person, per day</div>
+          </div>
+          <div class="tracker-current-price">
+            <div class="tracker-price-num">$29.99</div>
+            <div class="tracker-price-label">Per person / day · $252 total</div>
+            <div class="tracker-trend trend-same">First check</div>
+          </div>
+        </div>
+        <div class="price-history">
+          <div class="price-history-label">Price history</div>
+          <div class="history-row latest">
+            <span>May 27, 2025</span>
+            <span class="h-price">$29.99 / day &nbsp;·&nbsp; $252 total</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- EXCURSIONS -->
+    <div class="tracker-panel" id="panel-excursions">
+      <div class="port-header"><span style="font-size:20px;">🏖️</span><div class="port-name">Celebration Key, Bahamas</div></div>
+      <div class="port-empty">No excursions added yet</div>
+      <div class="port-header"><span style="font-size:20px;">🌴</span><div class="port-name">San Juan, Puerto Rico</div></div>
+      <div class="port-empty">No excursions added yet</div>
+      <div class="port-header"><span style="font-size:20px;">⛵</span><div class="port-name">St. Thomas, USVI</div></div>
+      <div class="port-empty">No excursions added yet</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- TIMELINE -->
+  <section id="timeline">
+    <p class="section-label">Itinerary</p>
+    <h2 class="section-title">Trip timeline</h2>
+    <div style="background: var(--white); border: 1px solid var(--card-border); border-radius: 14px; padding: 8px 22px;">
+      <div class="timeline-row">
+        <div class="tl-date">Fri · Mar 5</div>
+        <div><div class="tl-text">Fargo crew drives to MSP</div><div class="tl-detail">Nolan, Gavin &amp; Mason head south — park at MSP for the week</div></div>
+      </div>
+      <div class="timeline-row">
+        <div class="tl-date">Sat · Mar 6</div>
+        <div><div class="tl-text">Fly day → MCO</div><div class="tl-detail">All 9 land in Orlando by 5 pm · Check in at Holiday Inn Express Cape Canaveral</div></div>
+      </div>
+      <div class="timeline-row">
+        <div class="tl-date">Sun · Mar 7</div>
+        <div><div class="tl-text">Embarkation day 🚢</div><div class="tl-detail">Walk to port · Board Carnival Venezia · We're on vacation</div></div>
+      </div>
+      <div class="timeline-row">
+        <div class="tl-date">Mon · Mar 8</div>
+        <div><div class="tl-text">Sea day</div></div>
+      </div>
+      <div class="timeline-row">
+        <div class="tl-date">Tue · Mar 9</div>
+        <div><div class="tl-text">Celebration Key, Bahamas 🏖️</div></div>
+      </div>
+      <div class="timeline-row">
+        <div class="tl-date">Wed · Mar 10</div>
+        <div><div class="tl-text">Sea day</div></div>
+      </div>
+      <div class="timeline-row">
+        <div class="tl-date">Thu · Mar 11</div>
+        <div><div class="tl-text">San Juan, Puerto Rico 🌴</div></div>
+      </div>
+      <div class="timeline-row">
+        <div class="tl-date">Fri · Mar 12</div>
+        <div><div class="tl-text">St. Thomas, USVI ⛵</div></div>
+      </div>
+      <div class="timeline-row">
+        <div class="tl-date">Sat · Mar 13</div>
+        <div><div class="tl-text">Sea day</div></div>
+      </div>
+      <div class="timeline-row">
+        <div class="tl-date">Sun · Mar 14</div>
+        <div><div class="tl-text">Disembark &amp; fly home</div><div class="tl-detail">Off the ship · Head to MCO · All flights depart after 1–2 pm</div></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <strong>Wayne &amp; Konz Family Cruise — March 7–14, 2027</strong><br>
+  Carnival Venezia · Port Canaveral, FL
+</footer>
+
+<script>
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function updateCountdowns() {
+    const now = new Date();
+    const vacation = new Date(2027, 2, 6, 6, 0, 0);
+    const cruise   = new Date(2027, 2, 7, 16, 0, 0);
+    function render(target, ids) {
+      const diff = target - now;
+      if (diff <= 0) { ids.forEach(id => document.getElementById(id).textContent = '00'); return; }
+      const days  = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins  = Math.floor((diff % 3600000) / 60000);
+      const secs  = Math.floor((diff % 60000) / 1000);
+      const [d,h,m,s] = ids;
+      document.getElementById(d).textContent = days;
+      document.getElementById(h).textContent = pad(hours);
+      document.getElementById(m).textContent = pad(mins);
+      document.getElementById(s).textContent = pad(secs);
+    }
+    render(vacation, ['vac-days','vac-hours','vac-mins','vac-secs']);
+    render(cruise,   ['cruise-days','cruise-hours','cruise-mins','cruise-secs']);
+  }
+  updateCountdowns();
+  setInterval(updateCountdowns, 1000);
+
+  function showTab(name, el) {
+    document.querySelectorAll('.tracker-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tracker-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    el.classList.add('active');
+  }
+</script>
+</body>
+</html>
